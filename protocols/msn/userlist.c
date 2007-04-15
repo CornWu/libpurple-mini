@@ -455,7 +455,8 @@ msn_userlist_find_add_user(MsnUserList *userlist,const char *passport,const char
 	MsnUser *user;
 
 	user = msn_userlist_find_user(userlist, passport);
-	if (user == NULL){
+	if (user == NULL)
+	{
 		user = msn_user_new(userlist, passport, userName);
 		msn_userlist_add_user(userlist, user);
 	}
@@ -553,7 +554,7 @@ msn_userlist_find_group_id(MsnUserList *userlist, const char *group_name)
 
 	group = msn_userlist_find_group_with_name(userlist, group_name);
 
-	if (group != NULL){
+	if (group != NULL)
 		return msn_group_get_id(group);
 	else
 		return NULL;
@@ -566,11 +567,10 @@ msn_userlist_find_group_name(MsnUserList *userlist, const char * group_id)
 
 	group = msn_userlist_find_group_with_id(userlist, group_id);
 
-	if (group != NULL){
+	if (group != NULL)
 		return msn_group_get_name(group);
-	}else{
+	else
 		return NULL;
-	}
 }
 
 void
@@ -627,7 +627,8 @@ msn_userlist_rem_buddy(MsnUserList *userlist,
 	}
 
 	/* First we're going to check if not there. */
-	if (!(user_is_there(user, list_id, group_id))){
+	if (!(user_is_there(user, list_id, group_id)))
+	{
 		list = lists[list_id];
 		purple_debug_error("msn", "User '%s' is not there: %s\n",
 						 who, list);
@@ -684,7 +685,8 @@ msn_userlist_add_buddy(MsnUserList *userlist,
 	user = msn_userlist_find_user(userlist, who);
 
 	/* First we're going to check if it's already there. */
-	if (user_is_there(user, list_id, group_id)){
+	if (user_is_there(user, list_id, group_id))
+	{
 		list = lists[list_id];
 		purple_debug_error("msn", "User '%s' is already there: %s\n", who, list);
 		return;
@@ -730,18 +732,22 @@ msn_userlist_load(MsnSession *session)
 
 	g_return_if_fail(gc != NULL);
 
-	for (gnode = purple_get_blist()->root; gnode; gnode = gnode->next){
-		if(!PURPLE_BLIST_NODE_IS_GROUP(gnode))
+	for (gnode = purple_get_blist()->root; gnode; gnode = gnode->next)
+	{
+		if (!PURPLE_BLIST_NODE_IS_GROUP(gnode))
 			continue;
-		for(cnode = gnode->child; cnode; cnode = cnode->next) {
-			if(!PURPLE_BLIST_NODE_IS_CONTACT(cnode))
+		for (cnode = gnode->child; cnode; cnode = cnode->next)
+		{
+			if (!PURPLE_BLIST_NODE_IS_CONTACT(cnode))
 				continue;
-			for(bnode = cnode->child; bnode; bnode = bnode->next) {
+			for (bnode = cnode->child; bnode; bnode = bnode->next)
+			{
 				PurpleBuddy *b;
-				if(!PURPLE_BLIST_NODE_IS_BUDDY(bnode))
+				if (!PURPLE_BLIST_NODE_IS_BUDDY(bnode))
 					continue;
 				b = (PurpleBuddy *)bnode;
-				if(b->account == gc->account){
+				if (b->account == gc->account)
+				{
 					user = msn_userlist_find_add_user(session->userlist,
 						b->name,NULL);
 					b->proto_data = user;
@@ -750,12 +756,14 @@ msn_userlist_load(MsnSession *session)
 			}
 		}
 	}
-	for (l = session->account->permit; l != NULL; l = l->next) {
+	for (l = session->account->permit; l != NULL; l = l->next)
+	{
 		user = msn_userlist_find_add_user(session->userlist,
 						(char *)l->data,NULL);
 		msn_user_set_op(user, MSN_LIST_AL_OP);
 	}
-	for (l = session->account->deny; l != NULL; l = l->next) {
+	for (l = session->account->deny; l != NULL; l = l->next)
+	{
 		user = msn_userlist_find_add_user(session->userlist,
 						(char *)l->data,NULL);
 		msn_user_set_op(user, MSN_LIST_BL_OP);
